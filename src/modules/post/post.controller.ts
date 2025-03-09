@@ -7,26 +7,26 @@ export class PostController {
   constructor(private readonly postService: PostService) { }
 
   @Get()
-  getAllPosts(): string {
+  getAllPosts() {
     return this.postService.getPostAll();
   }
 
-  @Get(':id')
-  getPostById(@Param('id') id: string): string {
-    console.log(id);
-    return this.postService.getPostById(id);
-  }
+  // @Get(':id')
+  // getPostById(@Param('id') id: string): string {
+  //   console.log(id);
+  //   return this.postService.getPostById(id);
+  // }
 
-  @Get(':id/comments')
-  getCommentsByPostId(@Param('id') id: string): string {
-    console.log(id);
-    return this.postService.getCommentsByPostId(id);
-  }
+  // @Get(':id/comments')
+  // getCommentsByPostId(@Param('id') id: string): string {
+  //   console.log(id);
+  //   return this.postService.getCommentsByPostId(id);
+  // }
 
   @Post()
   @UsePipes(new ValidationPipe({ whitelist: true }))
   createPost(@Body() createPostDto: CreatePostDto) {
-    return createPostDto;
+    return this.postService.createPost(createPostDto);
   }
 
   @Put(':id')
