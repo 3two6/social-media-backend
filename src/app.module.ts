@@ -7,7 +7,7 @@ import { Post } from './modules/post/entities/post.entity';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      isGlobal: true, // Loads .env file globally
+      isGlobal: true,
     }),
     TypeOrmModule.forRoot({
       type: 'postgres',
@@ -17,8 +17,8 @@ import { Post } from './modules/post/entities/post.entity';
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
       entities: [Post],
-      synchronize: process.env.DB_SYNCHRONIZE === 'true',
-      logging: process.env.DB_LOGGING === 'true',
+      synchronize: true,
+      logging: true,
     }),
     PostModule
   ]
