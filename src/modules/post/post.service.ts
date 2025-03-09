@@ -30,7 +30,7 @@ export class PostService {
     const post = await this.postRepository.findOne({ where: { id } });
 
     if (!post) {
-      throw new NotFoundException(`Post with ID ${id} not found`);
+      throw new NotFoundException(`Post ${id} not found`);
     }
 
     Object.assign(post, updatePostDto);
@@ -41,10 +41,22 @@ export class PostService {
     const post = await this.postRepository.findOne({ where: { id } });
 
     if (!post) {
-      throw new NotFoundException(`Post with ID ${id} not found`);
+      throw new NotFoundException(`Post ${id} not found`);
     }
 
     Object.assign(post, updatePostDto);
     return await this.postRepository.save(post);
+  }
+
+  async deletePost(id: number): Promise<{ message: string }> {
+    const post = await this.postRepository.findOne({ where: { id } });
+
+    if (!post) {
+      throw new NotFoundException(`Post ${id} not found`);
+    }
+
+    await this.postRepository.remove(post);
+
+    return { message: `Post ${id} has been deleted successfully` };
   }
 }
