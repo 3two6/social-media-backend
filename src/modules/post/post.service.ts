@@ -21,9 +21,9 @@ export class PostService {
     return this.postRepository.find();
   }
 
-  // async getPostById(id: string): Promise<Post | null> {
-  //   return this.postRepository.findOne({ where: { id } }); // Return post with the given ID
-  // }
+  async getPostById(id: number): Promise<Post | null> {
+    return this.postRepository.findOne({ where: { id } });
+  }
 
   // Get all comments related to a post
   // async getCommentsByPostId(id: string): Promise<Comment[]> {
