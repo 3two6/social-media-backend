@@ -36,4 +36,15 @@ export class PostService {
     Object.assign(post, updatePostDto);
     return await this.postRepository.save(post);
   }
+
+  async modifyPost(id: number, updatePostDto: UpdatePostDto): Promise<Post> {
+    const post = await this.postRepository.findOne({ where: { id } });
+
+    if (!post) {
+      throw new NotFoundException(`Post with ID ${id} not found`);
+    }
+
+    Object.assign(post, updatePostDto);
+    return await this.postRepository.save(post);
+  }
 }
