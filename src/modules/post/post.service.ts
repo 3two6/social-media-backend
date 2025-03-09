@@ -1,8 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Post } from './entities/post.entity';
 import { Repository } from 'typeorm';
 import { CreatePostDto } from './dto/create-post.dto';
+import { UpdatePostDto } from './dto/update-post.dto';
 
 @Injectable()
 export class PostService {
@@ -14,19 +15,25 @@ export class PostService {
     const post = new Post();
     post.title = createPostDto.title;
     post.body = createPostDto.body;
-    return this.postRepository.save(post);
+    return await this.postRepository.save(post);
   }
 
   async getPostAll(): Promise<Post[]> {
-    return this.postRepository.find();
+    return await this.postRepository.find();
   }
 
-  // async getPostById(id: string): Promise<Post | null> {
-  //   return this.postRepository.findOne({ where: { id } }); // Return post with the given ID
-  // }
+  async getPostById(id: number): Promise<Post | null> {
+    return await this.postRepository.findOne({ where: { id } });
+  }
 
-  // Get all comments related to a post
-  // async getCommentsByPostId(id: string): Promise<Comment[]> {
-  //   return this.commentRepository.find({ where: { postId: id } }); // Return all comments for the post
-  // }
+  async updatePost(id: number, updatePostDto: UpdatePostDto): Promise<Post> {
+    const post = await this.postRepository.findOne({ where: { id } });
+
+    if (!post) {
+      throw new NotFoundException(`Post with ID ${id} not found`);
+    }
+
+    Object.assign(post, updatePostDto);
+    return await this.postRepository.save(post);
+  }
 }
