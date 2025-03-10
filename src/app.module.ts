@@ -20,7 +20,7 @@ import { Post } from './modules/post/entities/post.entity';
       synchronize: true,
       logging: true,
     }),
-    PostModule
-  ]
+    PostModule,
+  ],
 })
-export class AppModule { }
+export class AppModule {}
