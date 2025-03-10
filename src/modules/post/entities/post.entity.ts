@@ -2,12 +2,12 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Post {
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column({ type: 'varchar' })
-    title: string;
+  @Column({ type: 'varchar' })
+  title: string;
 
-    @Column({ type: 'varchar' })
-    body: string;
+  @Column({ type: 'varchar' })
+  body: string;
 }
