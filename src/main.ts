@@ -1,13 +1,22 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
-  try {
-    const app = await NestFactory.create(AppModule);
-    await app.listen(process.env.PORT ?? 3000);
-  } catch (error) {
-    console.error('Error starting the application:', error);
-    process.exit(1);
-  }
+  const app = await NestFactory.create(AppModule);
+
+  // Swagger Configuration
+  const config = new DocumentBuilder()
+    .setTitle('Social Media API')
+    .setDescription('API documentation for the social media backend')
+    .setVersion('1.0')
+    .addBearerAuth() // Add JWT Bearer Auth (optional)
+    .build();
+
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api', app, document);
+
+  await app.listen(process.env.PORT ?? 3000);
 }
+
 bootstrap();
