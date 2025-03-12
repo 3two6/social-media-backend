@@ -14,12 +14,17 @@ import { PostService } from './post.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { ApiTags } from '@nestjs/swagger';
-import { ApiDeleteOperation, ApiGetOperation, ApiPostOperation, ApiPutPatchOperation } from 'src/utils/swagger.decorators';
+import {
+  ApiDeleteOperation,
+  ApiGetOperation,
+  ApiPostOperation,
+  ApiPutPatchOperation,
+} from 'src/utils/swagger.decorators';
 
 @ApiTags('Posts')
 @Controller('posts')
 export class PostController {
-  constructor(private readonly postService: PostService) { }
+  constructor(private readonly postService: PostService) {}
 
   @Get()
   @ApiGetOperation('Get all posts')
