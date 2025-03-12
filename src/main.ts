@@ -10,13 +10,17 @@ async function bootstrap() {
     .setTitle('Social Media API')
     .setDescription('API documentation for the social media backend')
     .setVersion('1.0')
-    .addBearerAuth() // Add JWT Bearer Auth (optional)
+    .addBearerAuth()
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
+
+  void SwaggerModule.setup('api', app, document);
 
   await app.listen(process.env.PORT ?? 3000);
 }
 
-bootstrap();
+bootstrap().catch((err) => {
+  console.error('Error during app bootstrap:', err);
+  process.exit(1);
+});
