@@ -1,0 +1,63 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+  pull_request:
+
+jobs:
+  build:
+    name: Build and Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run linting
+        run: npm run lint
+
+      - name: Run tests
+        run: npm test
+
+  docker:
+    name: Build and Push Docker Image
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Log in to Docker Hub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      - name: Build and tag Docker image
+        run: |
+          docker build -t your-docker-username/backend-app:latest .
+          docker push your-docker-username/backend-app:latest
+
+  deploy:
+    name: Deploy to Server
+    needs: docker
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy application
+        run: |
+          ssh -o StrictHostKeyChecking=no user@your-server-ip << 'EOF'
+          docker pull your-docker-username/backend-app:latest
+          docker stop backend-app || true
+          docker rm backend-app || true
+          docker run -d --name backend-app -p 4000:4000 your-docker-username/backend-app:latest
+          EOF
